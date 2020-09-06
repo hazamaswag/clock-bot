@@ -1,2 +1,2 @@
 # clock-bot
-### testing
+### This is a clock bot
