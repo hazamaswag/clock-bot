@@ -6,7 +6,8 @@
 
 ### Example
 ``` !try 1 ```
-``` Naruto
-    Japanese: ナルト
-    Score: 7.86
+``` 
+Naruto
+Japanese: ナルト
+Score: 7.86
 ```
