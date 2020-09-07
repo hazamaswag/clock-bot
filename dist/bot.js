@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
 const discord_js_1 = require("discord.js");
+const jikants_1 = __importDefault(require("jikants"));
 const client = new discord_js_1.Client();
 const PREFIX = "!";
 client.on("ready", () => {
@@ -25,12 +29,36 @@ client.on("message", (message) => __awaiter(void 0, void 0, void 0, function* ()
             .trim()
             .substring(PREFIX.length)
             .split(/\s+/);
-        if (CMD_NAME === "drive" && !args.length) {
-            yield message.channel
-                .send("to change")
-                .catch((error) => message.channel.send(error));
+        if (CMD_NAME === "try" && args.length) {
+            const title = yield jikants_1.default.Anime.byId(+args[0])
+                .then((b) => ({
+                eng_title: b === null || b === void 0 ? void 0 : b.title,
+                nihongo_title: b === null || b === void 0 ? void 0 : b.title_japanese,
+            }))
+                .catch((error) => console.log(error));
+            const scores = yield jikants_1.default.Anime.stats(+args[0])
+                .then((b) => b === null || b === void 0 ? void 0 : b.scores)
+                .catch((error) => console.log(error));
+            console.log(title.nihongo_title, scores);
+            if (scores != undefined) {
+                let finalScore = 0;
+                for (let s in scores) {
+                    const vote = s;
+                    const percentage = scores[s].percentage / 100;
+                    finalScore += +vote * percentage;
+                    console.log(finalScore);
+                }
+                yield message.channel
+                    .send(`${title.eng_title}\nJapanese: ${title.nihongo_title}\nScore: ${finalScore}`)
+                    .catch((error) => message.channel.send(error + " fail"));
+            }
+            else {
+                yield message.channel
+                    .send(`not in base`)
+                    .catch((error) => message.channel.send(error + " fail"));
+            }
         }
     }
 }));
-client.login(process.env.CLOCK_BOT_TOKEN);
+client.login(process.env.SUGOI_BOT_TOKEN);
 //# sourceMappingURL=bot.js.map
