@@ -5,7 +5,7 @@ Basic discord bot that shows random anime titles and their scores using the Jink
 ``` !try [INTEGER] ```
 
 ### Example
-``` !try 1 ```
+``` !try 20 ```
 ``` 
 Naruto
 Japanese: ナルト
